@@ -14,7 +14,7 @@ func TestListUsers(t *testing.T) {
 	mux.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, fixture("users_list.json"))
+		fmt.Fprintf(w, getFixture("users_list.json"))
 	})
 
 	u, _, err := client.Users.List()
@@ -35,7 +35,7 @@ func TestGetUsers(t *testing.T) {
 	mux.HandleFunc("/user/123", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, fixture("users_get.json"))
+		fmt.Fprintf(w, getFixture("users_get.json"))
 	})
 
 	u, _, err := client.Users.Get(123)
@@ -56,7 +56,7 @@ func TestListTeams(t *testing.T) {
 	mux.HandleFunc("/user/123/teams", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, fixture("users_list_teams.json"))
+		fmt.Fprintf(w, getFixture("users_list_teams.json"))
 	})
 
 	teams, _, err := client.Users.ListTeams(123)
@@ -77,7 +77,7 @@ func TestListProjects(t *testing.T) {
 	mux.HandleFunc("/user/123/projects", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, fixture("users_list_projects.json"))
+		fmt.Fprintf(w, getFixture("users_list_projects.json"))
 	})
 
 	p, _, err := client.Users.ListProjects(123)
