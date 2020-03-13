@@ -26,21 +26,14 @@ type Client struct {
 	// HTTP client used to communicate with the API.
 	http *simpleresty.Client
 
-	// BaseURL for API
-	BaseURL string
+	// baseURL for API. No trailing slashes.
+	baseURL string
 
 	// Reuse a single struct instead of allocating one for each service on the heap.
 	common service
 
 	// User agent used when communicating with the Rollbar API.
-	UserAgent string
-
-	// Services used for talking to different parts of the Rollbar API.
-	Notifications       *NotificationsService
-	Projects            *ProjectsService
-	ProjectAccessTokens *ProjectAccessTokensService
-	Teams               *TeamsService
-	Users               *UsersService
+	userAgent string
 
 	// Custom HTTPHeaders
 	customHTTPHeaders map[string]string
@@ -50,42 +43,47 @@ type Client struct {
 
 	// Project access token
 	projectAccessToken string
+
+	// Services used for talking to different parts of the Rollbar API.
+	Notifications       *NotificationsService
+	Projects            *ProjectsService
+	ProjectAccessTokens *ProjectAccessTokensService
+	Teams               *TeamsService
+	Users               *UsersService
 }
 
-// service represents the api service client.
+// service represents the API service client.
 type service struct {
 	client *Client
 }
 
-// TokenAuthConfig represents options when initializing a new API http.
-type TokenAuthConfig struct {
-	// ProjectAccessToken is a Rollbar project access token.
-	ProjectAccessToken *string
-
-	// AccountAccessToken is a Rollbar account access token.
-	AccountAccessToken *string
-
-	// Custom HTTPHeaders
-	CustomHTTPHeaders map[string]string
-}
-
-// NewClientTokenAuth constructs a new client to interact with the Rollbar API using a project or account access token.
-func NewClientTokenAuth(config *TokenAuthConfig) (*Client, error) {
-	// Validate that either ProjectAccessToken or AccountAccessToken are set in TokenAuthConfig.
-	if config.GetProjectAccessToken() == "" && config.GetAccountAccessToken() == "" {
-		return nil, fmt.Errorf("please set an account access token and/or a project access token for authentication")
-	}
-
+// New constructs a new client to interact with the API using a project and/or account access token.
+func New(opts ...Option) (*Client, error) {
 	// Construct new client.
 	c := &Client{
-		http: simpleresty.New(), BaseURL: DefaultAPIBaseURL, UserAgent: DefaultUserAgent,
-		customHTTPHeaders: config.CustomHTTPHeaders, accountAccessToken: config.GetAccountAccessToken(),
-		projectAccessToken: config.GetProjectAccessToken(),
+		http:               simpleresty.New(),
+		baseURL:            DefaultAPIBaseURL,
+		userAgent:          DefaultUserAgent,
+		customHTTPHeaders:  map[string]string{},
+		accountAccessToken: "",
+		projectAccessToken: "",
 	}
-	c.injectServices()
 
-	// Setup client
+	// Define any user custom Client settings
+	if optErr := c.parseOptions(opts...); optErr != nil {
+		return nil, optErr
+	}
+
+	// Validate that Client has a non empty account or project access token. One must be set.
+	if c.accountAccessToken == "" && c.projectAccessToken == "" {
+		return nil, fmt.Errorf("please set one or both: acccount/project access token")
+	}
+
+	// Setup the client with default settings
 	c.setupClient()
+
+	// Inject services
+	c.injectServices()
 
 	return c, nil
 }
@@ -102,19 +100,39 @@ func (c *Client) injectServices() {
 
 // setupClient sets common headers and other configurations.
 func (c *Client) setupClient() {
-	// We aren't setting an authentication header initially here as certain API resources require specific access_tokens.
-	// Per Rollbar API documentation, each individual resource will set the access_token parameter when constructing
-	// the full API endpoint URL.
+	// Set Base URL
+	c.http.SetBaseURL(c.baseURL)
+
+	/*
+		We aren't setting an authentication header initially here as certain API resources require specific access_tokens.
+		Per Rollbar API documentation, each individual resource will set the access_token parameter when constructing
+		the full API endpoint URL.
+	*/
 	c.http.SetHeader("Content-type", "application/json").
 		SetHeader("Accept", "application/json").
-		SetHeader("User-Agent", c.UserAgent).
-		SetTimeout(5 * time.Minute).
+		SetHeader("User-Agent", c.userAgent).
+		SetTimeout(1 * time.Minute).
 		SetAllowGetMethodPayload(true)
 
 	// Set additional headers
 	if c.customHTTPHeaders != nil {
 		c.http.SetHeaders(c.customHTTPHeaders)
 	}
+}
+
+// parseOptions parses the supplied options functions and returns a configured *Client instance.
+func (c *Client) parseOptions(opts ...Option) error {
+	// Range over each options function and apply it to our API type to
+	// configure it. Options functions are applied in order, with any
+	// conflicting options overriding earlier calls.
+	for _, option := range opts {
+		err := option(c)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func (c *Client) setAuthTokenHeader(token string) {

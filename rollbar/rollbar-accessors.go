@@ -581,28 +581,20 @@ func (t *TeamResponse) GetResult() *Team {
 	return t.Result
 }
 
-// GetAccountAccessToken returns the AccountAccessToken field if it's non-nil, zero value otherwise.
-func (t *TokenAuthConfig) GetAccountAccessToken() string {
-	if t == nil || t.AccountAccessToken == nil {
-		return ""
-	}
-	return *t.AccountAccessToken
-}
-
-// GetProjectAccessToken returns the ProjectAccessToken field if it's non-nil, zero value otherwise.
-func (t *TokenAuthConfig) GetProjectAccessToken() string {
-	if t == nil || t.ProjectAccessToken == nil {
-		return ""
-	}
-	return *t.ProjectAccessToken
-}
-
 // GetEmail returns the Email field if it's non-nil, zero value otherwise.
 func (u *User) GetEmail() string {
 	if u == nil || u.Email == nil {
 		return ""
 	}
 	return *u.Email
+}
+
+// GetEmailEnabled returns the EmailEnabled field if it's non-nil, zero value otherwise.
+func (u *User) GetEmailEnabled() int {
+	if u == nil || u.EmailEnabled == nil {
+		return 0
+	}
+	return *u.EmailEnabled
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
@@ -629,15 +621,82 @@ func (u *UserListResponse) GetErrorCount() int {
 	return *u.ErrorCount
 }
 
-// HasResult checks if UserListResponse has any Result.
-func (u *UserListResponse) HasResult() bool {
-	if u == nil || u.Result == nil {
+// GetResult returns the Result field.
+func (u *UserListResponse) GetResult() *UserListResult {
+	if u == nil {
+		return nil
+	}
+	return u.Result
+}
+
+// HasUsers checks if UserListResult has any Users.
+func (u *UserListResult) HasUsers() bool {
+	if u == nil || u.Users == nil {
 		return false
 	}
-	if len(u.Result) == 0 {
+	if len(u.Users) == 0 {
 		return false
 	}
 	return true
+}
+
+// GetAccountID returns the AccountID field if it's non-nil, zero value otherwise.
+func (u *UserProject) GetAccountID() int64 {
+	if u == nil || u.AccountID == nil {
+		return 0
+	}
+	return *u.AccountID
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (u *UserProject) GetID() int64 {
+	if u == nil || u.ID == nil {
+		return 0
+	}
+	return *u.ID
+}
+
+// GetSlug returns the Slug field if it's non-nil, zero value otherwise.
+func (u *UserProject) GetSlug() string {
+	if u == nil || u.Slug == nil {
+		return ""
+	}
+	return *u.Slug
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (u *UserProject) GetStatus() int {
+	if u == nil || u.Status == nil {
+		return 0
+	}
+	return *u.Status
+}
+
+// HasProjects checks if UserProjectsList has any Projects.
+func (u *UserProjectsList) HasProjects() bool {
+	if u == nil || u.Projects == nil {
+		return false
+	}
+	if len(u.Projects) == 0 {
+		return false
+	}
+	return true
+}
+
+// GetErrorCount returns the ErrorCount field if it's non-nil, zero value otherwise.
+func (u *UserProjectsListResponse) GetErrorCount() int {
+	if u == nil || u.ErrorCount == nil {
+		return 0
+	}
+	return *u.ErrorCount
+}
+
+// GetResult returns the Result field.
+func (u *UserProjectsListResponse) GetResult() *UserProjectsList {
+	if u == nil {
+		return nil
+	}
+	return u.Result
 }
 
 // GetErrorCount returns the ErrorCount field if it's non-nil, zero value otherwise.
@@ -650,6 +709,33 @@ func (u *UserResponse) GetErrorCount() int {
 
 // GetResult returns the Result field.
 func (u *UserResponse) GetResult() *User {
+	if u == nil {
+		return nil
+	}
+	return u.Result
+}
+
+// HasTeams checks if UserTeamsList has any Teams.
+func (u *UserTeamsList) HasTeams() bool {
+	if u == nil || u.Teams == nil {
+		return false
+	}
+	if len(u.Teams) == 0 {
+		return false
+	}
+	return true
+}
+
+// GetErrorCount returns the ErrorCount field if it's non-nil, zero value otherwise.
+func (u *UserTeamsListResponse) GetErrorCount() int {
+	if u == nil || u.ErrorCount == nil {
+		return 0
+	}
+	return *u.ErrorCount
+}
+
+// GetResult returns the Result field.
+func (u *UserTeamsListResponse) GetResult() *UserTeamsList {
 	if u == nil {
 		return nil
 	}
