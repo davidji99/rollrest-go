@@ -1,6 +1,9 @@
 package rollbar
 
-import "github.com/davidji99/simpleresty"
+import (
+	"fmt"
+	"github.com/davidji99/simpleresty"
+)
 
 // Option is a functional option for configuring the API client.
 type Option func(*Client) error
@@ -24,6 +27,9 @@ func UserAgent(userAgent string) Option {
 func BaseURL(baseURL string) Option {
 	return func(c *Client) error {
 		// Validate that there is no trailing slashes before setting the custom baseURL
+		if baseURL[len(baseURL)-1:] == "/" {
+			return fmt.Errorf("custom base URL cannot contain a trailing slash")
+		}
 
 		c.baseURL = baseURL
 		return nil

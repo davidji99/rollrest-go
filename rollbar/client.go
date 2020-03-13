@@ -60,7 +60,7 @@ type service struct {
 // New constructs a new client to interact with the API using a project and/or account access token.
 func New(opts ...Option) (*Client, error) {
 	// Construct new client.
-	client := &Client{
+	c := &Client{
 		http:               simpleresty.New(),
 		baseURL:            DefaultAPIBaseURL,
 		userAgent:          DefaultUserAgent,
@@ -70,22 +70,22 @@ func New(opts ...Option) (*Client, error) {
 	}
 
 	// Define any user custom Client settings
-	if optErr := client.parseOptions(opts...); optErr != nil {
+	if optErr := c.parseOptions(opts...); optErr != nil {
 		return nil, optErr
 	}
 
 	// Validate that Client has a non empty account or project access token. One must be set.
-	if client.accountAccessToken == "" && client.projectAccessToken == "" {
+	if c.accountAccessToken == "" && c.projectAccessToken == "" {
 		return nil, fmt.Errorf("please set one or both: acccount/project access token")
 	}
 
+	// Setup the client with default settings
+	c.setupClient()
+
 	// Inject services
-	client.injectServices()
+	c.injectServices()
 
-	// Setup client
-	client.setupClient()
-
-	return client, nil
+	return c, nil
 }
 
 // injectServices adds the services to the client.
@@ -100,16 +100,18 @@ func (c *Client) injectServices() {
 
 // setupClient sets common headers and other configurations.
 func (c *Client) setupClient() {
+	// Set Base URL
+	c.http.SetBaseURL(c.baseURL)
+
 	/*
 		We aren't setting an authentication header initially here as certain API resources require specific access_tokens.
 		Per Rollbar API documentation, each individual resource will set the access_token parameter when constructing
 		the full API endpoint URL.
 	*/
-
 	c.http.SetHeader("Content-type", "application/json").
 		SetHeader("Accept", "application/json").
 		SetHeader("User-Agent", c.userAgent).
-		SetTimeout(5 * time.Minute).
+		SetTimeout(1 * time.Minute).
 		SetAllowGetMethodPayload(true)
 
 	// Set additional headers
@@ -118,8 +120,7 @@ func (c *Client) setupClient() {
 	}
 }
 
-// parseOptions parses the supplied options functions and returns a configured
-// *Client instance
+// parseOptions parses the supplied options functions and returns a configured *Client instance.
 func (c *Client) parseOptions(opts ...Option) error {
 	// Range over each options function and apply it to our API type to
 	// configure it. Options functions are applied in order, with any
