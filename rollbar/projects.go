@@ -1,5 +1,7 @@
 package rollbar
 
+import "github.com/davidji99/simpleresty"
+
 // ProjectsService handles communication with the project related
 // methods of the Rollbar API.
 //
@@ -64,15 +66,15 @@ type ProjectRequest struct {
 // please use the ListAll() function.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#list-all-projects
-func (p *ProjectsService) List() (*ProjectListResponse, *Response, error) {
+func (p *ProjectsService) List() (*ProjectListResponse, *simpleresty.Response, error) {
 	var result *ProjectListResponse
-	urlStr := p.client.requestURL("/projects")
+	urlStr := p.client.http.RequestURL("/projects")
 
 	// Set the correct authentication header
 	p.client.setAuthTokenHeader(p.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := p.client.Get(urlStr, &result, nil)
+	response, getErr := p.client.http.Get(urlStr, &result, nil)
 	if getErr != nil {
 		return nil, nil, getErr
 	}
@@ -98,15 +100,15 @@ func (p *ProjectsService) List() (*ProjectListResponse, *Response, error) {
 // please use the List() function.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#list-all-projects
-func (p *ProjectsService) ListAll() (*ProjectListResponse, *Response, error) {
+func (p *ProjectsService) ListAll() (*ProjectListResponse, *simpleresty.Response, error) {
 	var result *ProjectListResponse
-	urlStr := p.client.requestURL("/projects")
+	urlStr := p.client.http.RequestURL("/projects")
 
 	// Set the correct authentication header
 	p.client.setAuthTokenHeader(p.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := p.client.Get(urlStr, &result, nil)
+	response, getErr := p.client.http.Get(urlStr, &result, nil)
 
 	return result, response, getErr
 }
@@ -114,15 +116,15 @@ func (p *ProjectsService) ListAll() (*ProjectListResponse, *Response, error) {
 // Get a single project.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#get-a-project
-func (p *ProjectsService) Get(id int) (*ProjectResponse, *Response, error) {
+func (p *ProjectsService) Get(id int) (*ProjectResponse, *simpleresty.Response, error) {
 	var result *ProjectResponse
-	urlStr := p.client.requestURL("/project/%d", id)
+	urlStr := p.client.http.RequestURL("/project/%d", id)
 
 	// Set the correct authentication header
 	p.client.setAuthTokenHeader(p.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := p.client.Get(urlStr, &result, nil)
+	response, getErr := p.client.http.Get(urlStr, &result, nil)
 
 	return result, response, getErr
 }
@@ -130,15 +132,15 @@ func (p *ProjectsService) Get(id int) (*ProjectResponse, *Response, error) {
 // Create a single project.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#create-a-project
-func (p *ProjectsService) Create(opts *ProjectRequest) (*ProjectResponse, *Response, error) {
+func (p *ProjectsService) Create(opts *ProjectRequest) (*ProjectResponse, *simpleresty.Response, error) {
 	var result *ProjectResponse
-	urlStr := p.client.requestURL("/projects")
+	urlStr := p.client.http.RequestURL("/projects")
 
 	// Set the correct authentication header
 	p.client.setAuthTokenHeader(p.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := p.client.Post(urlStr, &result, opts)
+	response, getErr := p.client.http.Post(urlStr, &result, opts)
 
 	return result, response, getErr
 }
@@ -146,14 +148,14 @@ func (p *ProjectsService) Create(opts *ProjectRequest) (*ProjectResponse, *Respo
 // Delete an existing project.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#delete-a-project
-func (p *ProjectsService) Delete(id int) (*Response, error) {
-	urlStr := p.client.requestURL("/project/%d", id)
+func (p *ProjectsService) Delete(id int) (*simpleresty.Response, error) {
+	urlStr := p.client.http.RequestURL("/project/%d", id)
 
 	// Set the correct authentication header
 	p.client.setAuthTokenHeader(p.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := p.client.Delete(urlStr, nil)
+	response, getErr := p.client.http.Delete(urlStr, nil, nil)
 
 	return response, getErr
 }

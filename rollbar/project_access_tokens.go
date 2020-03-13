@@ -1,6 +1,9 @@
 package rollbar
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/davidji99/simpleresty"
+)
 
 // ProjectAccessTokensService handles communication with the project access token related
 // methods of the Rollbar API.
@@ -53,15 +56,15 @@ type PATUpdateRequest struct {
 // List all of a project's access tokens.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#list-all-project-access-tokens
-func (p *ProjectAccessTokensService) List(projectID int) (*ProjectAccessTokenListResponse, *Response, error) {
+func (p *ProjectAccessTokensService) List(projectID int) (*ProjectAccessTokenListResponse, *simpleresty.Response, error) {
 	var result *ProjectAccessTokenListResponse
-	urlStr := p.client.requestURL("/project/%d/access_tokens", projectID)
+	urlStr := p.client.http.RequestURL("/project/%d/access_tokens", projectID)
 
 	// Set the correct authentication header
 	p.client.setAuthTokenHeader(p.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := p.client.Get(urlStr, &result, nil)
+	response, getErr := p.client.http.Get(urlStr, &result, nil)
 
 	return result, response, getErr
 }
@@ -72,7 +75,7 @@ func (p *ProjectAccessTokensService) List(projectID int) (*ProjectAccessTokenLis
 //
 // Also as no endpoint officially exists, this function will first fetch all of a project's access token
 // and iterate through each token to find the specified one.
-func (p *ProjectAccessTokensService) Get(projectID int, accessToken string) (*ProjectAccessToken, *Response, error) {
+func (p *ProjectAccessTokensService) Get(projectID int, accessToken string) (*ProjectAccessToken, *simpleresty.Response, error) {
 	projects, _, listErr := p.List(projectID)
 	if listErr != nil {
 		return nil, nil, listErr
@@ -96,15 +99,15 @@ func (p *ProjectAccessTokensService) Get(projectID int, accessToken string) (*Pr
 // Create a project access token.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#create-a-project-access-token
-func (p *ProjectAccessTokensService) Create(projectID int, opts *PATCreateRequest) (*ProjectAccessTokenResponse, *Response, error) {
+func (p *ProjectAccessTokensService) Create(projectID int, opts *PATCreateRequest) (*ProjectAccessTokenResponse, *simpleresty.Response, error) {
 	var result *ProjectAccessTokenResponse
-	urlStr := p.client.requestURL("/project/%d/access_tokens", projectID)
+	urlStr := p.client.http.RequestURL("/project/%d/access_tokens", projectID)
 
 	// Set the correct authentication header
 	p.client.setAuthTokenHeader(p.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := p.client.Post(urlStr, &result, opts)
+	response, getErr := p.client.http.Post(urlStr, &result, opts)
 
 	return result, response, getErr
 }
@@ -113,7 +116,7 @@ func (p *ProjectAccessTokensService) Create(projectID int, opts *PATCreateReques
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#update-a-rate-limit
 func (p *ProjectAccessTokensService) Update(projectID int, accessToken string,
-	opts *PATUpdateRequest) (*ProjectAccessTokenResponse, *Response, error) {
+	opts *PATUpdateRequest) (*ProjectAccessTokenResponse, *simpleresty.Response, error) {
 	// API requires RateLimitWindowSize and RateLimitWindowCount to be both set in the request body so validate this first.
 	if opts.RateLimitWindowSize == nil || opts.RateLimitWindowCount == nil {
 		return nil, nil, fmt.Errorf("both rate_limit_window_size & rate_limit_window_count " +
@@ -121,13 +124,13 @@ func (p *ProjectAccessTokensService) Update(projectID int, accessToken string,
 	}
 
 	var result *ProjectAccessTokenResponse
-	urlStr := p.client.requestURL("/project/%d/access_token/%s", projectID, accessToken)
+	urlStr := p.client.http.RequestURL("/project/%d/access_token/%s", projectID, accessToken)
 
 	// Set the correct authentication header
 	p.client.setAuthTokenHeader(p.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := p.client.Patch(urlStr, &result, opts)
+	response, getErr := p.client.http.Patch(urlStr, &result, opts)
 
 	return result, response, getErr
 }

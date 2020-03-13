@@ -1,5 +1,7 @@
 package rollbar
 
+import "github.com/davidji99/simpleresty"
+
 // InvitationService handles communication with the invitation related
 // methods of the Rollbar API.
 //
@@ -32,15 +34,15 @@ type Invitation struct {
 // Get a invitation.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#get-invitation
-func (i *InvitationService) Get(inviteID int) (*InvitationResponse, *Response, error) {
+func (i *InvitationService) Get(inviteID int) (*InvitationResponse, *simpleresty.Response, error) {
 	var result *InvitationResponse
-	urlStr := i.client.requestURL("/invite/%d", inviteID)
+	urlStr := i.client.http.RequestURL("/invite/%d", inviteID)
 
 	// Set the correct authentication header
 	i.client.setAuthTokenHeader(i.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := i.client.Get(urlStr, &result, nil)
+	response, getErr := i.client.http.Get(urlStr, &result, nil)
 
 	return result, response, getErr
 }
@@ -48,14 +50,14 @@ func (i *InvitationService) Get(inviteID int) (*InvitationResponse, *Response, e
 // Cancel a invitation.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#cancel-invitation
-func (i *InvitationService) Cancel(inviteID int) (*Response, error) {
-	urlStr := i.client.requestURL("/invite/%d", inviteID)
+func (i *InvitationService) Cancel(inviteID int) (*simpleresty.Response, error) {
+	urlStr := i.client.http.RequestURL("/invite/%d", inviteID)
 
 	// Set the correct authentication header
 	i.client.setAuthTokenHeader(i.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := i.client.Delete(urlStr, nil)
+	response, getErr := i.client.http.Delete(urlStr, nil, nil)
 
 	return response, getErr
 }

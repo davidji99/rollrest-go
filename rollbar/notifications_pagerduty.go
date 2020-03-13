@@ -1,5 +1,7 @@
 package rollbar
 
+import "github.com/davidji99/simpleresty"
+
 // NotificationsService handles communication with the notification related
 // methods of the Rollbar API.
 //
@@ -39,14 +41,14 @@ type PDRuleConfig struct {
 // This function creates and modifies the PagerDuty integration. Requires a project access token.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#configuring-pagerduty-integration
-func (n *NotificationsService) ConfigurePagerDutyIntegration(opts *PDIntegrationRequest) (*Response, error) {
-	urlStr := n.client.requestURL("/notifications/pagerduty")
+func (n *NotificationsService) ConfigurePagerDutyIntegration(opts *PDIntegrationRequest) (*simpleresty.Response, error) {
+	urlStr := n.client.http.RequestURL("/notifications/pagerduty")
 
 	// Set the correct authentication header
 	n.client.setAuthTokenHeader(n.client.projectAccessToken)
 
 	// Execute the request
-	response, getErr := n.client.Put(urlStr, nil, opts)
+	response, getErr := n.client.http.Put(urlStr, nil, opts)
 
 	return response, getErr
 }
@@ -60,17 +62,17 @@ func (n *NotificationsService) ConfigurePagerDutyIntegration(opts *PDIntegration
 // a default rule is created: 'trigger in any environment where level >= debug'.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#setup-pagerduty-notification-rules
-func (n *NotificationsService) ModifyPagerDutyRules(opts []*PDRuleRequest) (bool, *Response, error) {
-	urlStr := n.client.requestURL("/notifications/pagerduty/rules")
+func (n *NotificationsService) ModifyPagerDutyRules(opts []*PDRuleRequest) (bool, *simpleresty.Response, error) {
+	urlStr := n.client.http.RequestURL("/notifications/pagerduty/rules")
 
 	// Set the correct authentication header
 	n.client.setAuthTokenHeader(n.client.projectAccessToken)
 
 	// Execute the request
 	isSuccessful := false
-	response, getErr := n.client.Put(urlStr, nil, opts)
+	response, getErr := n.client.http.Put(urlStr, nil, opts)
 	if getErr != nil {
-		return isSuccessful, response, getErr
+		return false, response, getErr
 	}
 
 	if response.StatusCode == 200 {
@@ -87,7 +89,7 @@ func (n *NotificationsService) ModifyPagerDutyRules(opts []*PDRuleRequest) (bool
 // (The API documentation is wrong regarding which documentation to use as of Feb. 10th, 2020.)
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#setup-pagerduty-notification-rules
-func (n *NotificationsService) DeleteAllPagerDutyRules() (bool, *Response, error) {
+func (n *NotificationsService) DeleteAllPagerDutyRules() (bool, *simpleresty.Response, error) {
 	opts := make([]*PDRuleRequest, 0)
 	return n.ModifyPagerDutyRules(opts)
 }
