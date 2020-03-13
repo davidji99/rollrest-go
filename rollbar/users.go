@@ -1,5 +1,7 @@
 package rollbar
 
+import "github.com/davidji99/simpleresty"
+
 // UsersService handles communication with the users related
 // methods of the Rollbar API.
 //
@@ -28,15 +30,15 @@ type UserListResponse struct {
 // List all users.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#list-all-users
-func (u *UsersService) List() (*UserListResponse, *Response, error) {
+func (u *UsersService) List() (*UserListResponse, *simpleresty.Response, error) {
 	var result *UserListResponse
-	urlStr := u.client.requestURL("/users")
+	urlStr := u.client.http.RequestURL("/users")
 
 	// Set the correct authentication header
 	u.client.setAuthTokenHeader(u.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := u.client.Get(urlStr, &result, nil)
+	response, getErr := u.client.http.Get(urlStr, &result, nil)
 
 	return result, response, getErr
 }
@@ -47,15 +49,15 @@ func (u *UsersService) List() (*UserListResponse, *Response, error) {
 // This is the same information available on the "Members" page in the Rollbar UI.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#get-a-user
-func (u *UsersService) Get(userID int) (*UserResponse, *Response, error) {
+func (u *UsersService) Get(userID int) (*UserResponse, *simpleresty.Response, error) {
 	var result *UserResponse
-	urlStr := u.client.requestURL("/user/%d", userID)
+	urlStr := u.client.http.RequestURL("/user/%d", userID)
 
 	// Set the correct authentication header
 	u.client.setAuthTokenHeader(u.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := u.client.Get(urlStr, &result, nil)
+	response, getErr := u.client.http.Get(urlStr, &result, nil)
 
 	return result, response, getErr
 }
@@ -63,15 +65,15 @@ func (u *UsersService) Get(userID int) (*UserResponse, *Response, error) {
 // ListTeams lists all teams that a user is a member of.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#list-a-users-teams
-func (u *UsersService) ListTeams(userID int) (*TeamListResponse, *Response, error) {
+func (u *UsersService) ListTeams(userID int) (*TeamListResponse, *simpleresty.Response, error) {
 	var result *TeamListResponse
-	urlStr := u.client.requestURL("/user/%d/teams", userID)
+	urlStr := u.client.http.RequestURL("/user/%d/teams", userID)
 
 	// Set the correct authentication header
 	u.client.setAuthTokenHeader(u.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := u.client.Get(urlStr, &result, nil)
+	response, getErr := u.client.http.Get(urlStr, &result, nil)
 
 	return result, response, getErr
 }
@@ -79,15 +81,15 @@ func (u *UsersService) ListTeams(userID int) (*TeamListResponse, *Response, erro
 // ListProjects lists all of a user's projects.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#list-a-users-projects
-func (u *UsersService) ListProjects(userID int) (*ProjectListResponse, *Response, error) {
+func (u *UsersService) ListProjects(userID int) (*ProjectListResponse, *simpleresty.Response, error) {
 	var result *ProjectListResponse
-	urlStr := u.client.requestURL("/user/%d/projects", userID)
+	urlStr := u.client.http.RequestURL("/user/%d/projects", userID)
 
 	// Set the correct authentication header
 	u.client.setAuthTokenHeader(u.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := u.client.Get(urlStr, &result, nil)
+	response, getErr := u.client.http.Get(urlStr, &result, nil)
 
 	return result, response, getErr
 }

@@ -1,5 +1,7 @@
 package rollbar
 
+import "github.com/davidji99/simpleresty"
+
 // TeamsService handles communication with the teams related
 // methods of the Rollbar API.
 //
@@ -53,15 +55,15 @@ type TeamProjectAssocResponse struct {
 // List all teams.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#list-all-teams
-func (t *TeamsService) List() (*TeamListResponse, *Response, error) {
+func (t *TeamsService) List() (*TeamListResponse, *simpleresty.Response, error) {
 	var result *TeamListResponse
-	urlStr := t.client.requestURL("/teams")
+	urlStr := t.client.http.RequestURL("/teams")
 
 	// Set the correct authentication header
 	t.client.setAuthTokenHeader(t.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := t.client.Get(urlStr, &result, nil)
+	response, getErr := t.client.http.Get(urlStr, &result, nil)
 
 	return result, response, getErr
 }
@@ -69,15 +71,15 @@ func (t *TeamsService) List() (*TeamListResponse, *Response, error) {
 // Create a team.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#create-a-team
-func (t *TeamsService) Create(opts *TeamRequest) (*TeamResponse, *Response, error) {
+func (t *TeamsService) Create(opts *TeamRequest) (*TeamResponse, *simpleresty.Response, error) {
 	var result *TeamResponse
-	urlStr := t.client.requestURL("/teams")
+	urlStr := t.client.http.RequestURL("/teams")
 
 	// Set the correct authentication header
 	t.client.setAuthTokenHeader(t.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := t.client.Post(urlStr, &result, opts)
+	response, getErr := t.client.http.Post(urlStr, &result, opts)
 
 	return result, response, getErr
 }
@@ -85,15 +87,15 @@ func (t *TeamsService) Create(opts *TeamRequest) (*TeamResponse, *Response, erro
 // Get a single teams.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#get-a-team
-func (t *TeamsService) Get(teamID int) (*TeamResponse, *Response, error) {
+func (t *TeamsService) Get(teamID int) (*TeamResponse, *simpleresty.Response, error) {
 	var result *TeamResponse
-	urlStr := t.client.requestURL("/team/%d", teamID)
+	urlStr := t.client.http.RequestURL("/team/%d", teamID)
 
 	// Set the correct authentication header
 	t.client.setAuthTokenHeader(t.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := t.client.Get(urlStr, &result, nil)
+	response, getErr := t.client.http.Get(urlStr, &result, nil)
 
 	return result, response, getErr
 }
@@ -101,14 +103,14 @@ func (t *TeamsService) Get(teamID int) (*TeamResponse, *Response, error) {
 // Delete an existing project.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#delete-a-team
-func (t *TeamsService) Delete(teamID int) (*Response, error) {
-	urlStr := t.client.requestURL("/team/%d", teamID)
+func (t *TeamsService) Delete(teamID int) (*simpleresty.Response, error) {
+	urlStr := t.client.http.RequestURL("/team/%d", teamID)
 
 	// Set the correct authentication header
 	t.client.setAuthTokenHeader(t.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := t.client.Delete(urlStr, nil)
+	response, getErr := t.client.http.Delete(urlStr, nil, nil)
 
 	return response, getErr
 }
@@ -116,15 +118,15 @@ func (t *TeamsService) Delete(teamID int) (*Response, error) {
 // ListUsers all users for a team.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#list-a-teams-users
-func (t *TeamsService) ListUsers(teamID int) (*UserListResponse, *Response, error) {
+func (t *TeamsService) ListUsers(teamID int) (*UserListResponse, *simpleresty.Response, error) {
 	var result *UserListResponse
-	urlStr := t.client.requestURL("/team/%d/users", teamID)
+	urlStr := t.client.http.RequestURL("/team/%d/users", teamID)
 
 	// Set the correct authentication header
 	t.client.setAuthTokenHeader(t.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := t.client.Get(urlStr, &result, nil)
+	response, getErr := t.client.http.Get(urlStr, &result, nil)
 
 	return result, response, getErr
 }
@@ -132,15 +134,15 @@ func (t *TeamsService) ListUsers(teamID int) (*UserListResponse, *Response, erro
 // IsUserAMember checks if a user is assigned to a team. Returns true if user is a member, false otherwise.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#check-if-a-user-is-assigned-to-a-team
-func (t *TeamsService) IsUserAMember(teamID, userID int) (bool, *Response, error) {
+func (t *TeamsService) IsUserAMember(teamID, userID int) (bool, *simpleresty.Response, error) {
 	isMember := false
-	urlStr := t.client.requestURL("/team/%d/user/%d", teamID, userID)
+	urlStr := t.client.http.RequestURL("/team/%d/user/%d", teamID, userID)
 
 	// Set the correct authentication header
 	t.client.setAuthTokenHeader(t.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := t.client.Get(urlStr, nil, nil)
+	response, getErr := t.client.http.Get(urlStr, nil, nil)
 	if getErr != nil {
 		return false, nil, getErr
 	}
@@ -156,14 +158,14 @@ func (t *TeamsService) IsUserAMember(teamID, userID int) (bool, *Response, error
 // AddUser assigns a user to team.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#assign-a-user-to-team
-func (t *TeamsService) AddUser(teamID, userID int) (bool, *Response, error) {
-	urlStr := t.client.requestURL("/team/%d/user/%d", teamID, userID)
+func (t *TeamsService) AddUser(teamID, userID int) (bool, *simpleresty.Response, error) {
+	urlStr := t.client.http.RequestURL("/team/%d/user/%d", teamID, userID)
 
 	// Set the correct authentication header
 	t.client.setAuthTokenHeader(t.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := t.client.Put(urlStr, nil, nil)
+	response, getErr := t.client.http.Put(urlStr, nil, nil)
 	if getErr != nil {
 		return false, nil, getErr
 	}
@@ -174,14 +176,14 @@ func (t *TeamsService) AddUser(teamID, userID int) (bool, *Response, error) {
 // RemoveUser removes a user to team.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#remove-a-user-from-a-team
-func (t *TeamsService) RemoveUser(teamID, userID int) (bool, *Response, error) {
-	urlStr := t.client.requestURL("/team/%d/user/%d", teamID, userID)
+func (t *TeamsService) RemoveUser(teamID, userID int) (bool, *simpleresty.Response, error) {
+	urlStr := t.client.http.RequestURL("/team/%d/user/%d", teamID, userID)
 
 	// Set the correct authentication header
 	t.client.setAuthTokenHeader(t.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := t.client.Delete(urlStr, nil)
+	response, getErr := t.client.http.Delete(urlStr, nil, nil)
 	if getErr != nil {
 		return false, nil, getErr
 	}
@@ -201,15 +203,15 @@ type TeamInviteRequest struct {
 // containing a signup link that will allow the recipient to join the specified team.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#invite-an-email-address-to-a-team
-func (t *TeamsService) InviteUser(teamID int, opts *TeamInviteRequest) (*InvitationResponse, *Response, error) {
+func (t *TeamsService) InviteUser(teamID int, opts *TeamInviteRequest) (*InvitationResponse, *simpleresty.Response, error) {
 	var result *InvitationResponse
-	urlStr := t.client.requestURL("/team/%d/invites", teamID)
+	urlStr := t.client.http.RequestURL("/team/%d/invites", teamID)
 
 	// Set the correct authentication header
 	t.client.setAuthTokenHeader(t.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := t.client.Post(urlStr, &result, opts)
+	response, getErr := t.client.http.Post(urlStr, &result, opts)
 
 	return result, response, getErr
 }
@@ -217,15 +219,15 @@ func (t *TeamsService) InviteUser(teamID int, opts *TeamInviteRequest) (*Invitat
 // ListInvitations returns all invitations of a given team.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#list-invitations-to-a-team
-func (t *TeamsService) ListInvitations(teamID int) (*InvitationListResponse, *Response, error) {
+func (t *TeamsService) ListInvitations(teamID int) (*InvitationListResponse, *simpleresty.Response, error) {
 	var result *InvitationListResponse
-	urlStr := t.client.requestURL("/team/%d/invites", teamID)
+	urlStr := t.client.http.RequestURL("/team/%d/invites", teamID)
 
 	// Set the correct authentication header
 	t.client.setAuthTokenHeader(t.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := t.client.Get(urlStr, &result, nil)
+	response, getErr := t.client.http.Get(urlStr, &result, nil)
 
 	return result, response, getErr
 }
@@ -233,15 +235,15 @@ func (t *TeamsService) ListInvitations(teamID int) (*InvitationListResponse, *Re
 // ListProjects returns all of a team's projects.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#list-a-teams-projects
-func (t *TeamsService) ListProjects(teamID int) (*TeamProjectAssocListResponse, *Response, error) {
+func (t *TeamsService) ListProjects(teamID int) (*TeamProjectAssocListResponse, *simpleresty.Response, error) {
 	var result *TeamProjectAssocListResponse
-	urlStr := t.client.requestURL("/team/%d/projects", teamID)
+	urlStr := t.client.http.RequestURL("/team/%d/projects", teamID)
 
 	// Set the correct authentication header
 	t.client.setAuthTokenHeader(t.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := t.client.Get(urlStr, &result, nil)
+	response, getErr := t.client.http.Get(urlStr, &result, nil)
 
 	return result, response, getErr
 }
@@ -249,15 +251,15 @@ func (t *TeamsService) ListProjects(teamID int) (*TeamProjectAssocListResponse, 
 // AssignProject assigns a project to a team.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#assign-a-team-to-a-project
-func (t *TeamsService) AssignProject(teamID, projectID int) (*TeamProjectAssocResponse, *Response, error) {
+func (t *TeamsService) AssignProject(teamID, projectID int) (*TeamProjectAssocResponse, *simpleresty.Response, error) {
 	var result *TeamProjectAssocResponse
-	urlStr := t.client.requestURL("/team/%d/project/%d", teamID, projectID)
+	urlStr := t.client.http.RequestURL("/team/%d/project/%d", teamID, projectID)
 
 	// Set the correct authentication header
 	t.client.setAuthTokenHeader(t.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := t.client.Put(urlStr, &result, nil)
+	response, getErr := t.client.http.Put(urlStr, &result, nil)
 
 	return result, response, getErr
 }
@@ -265,14 +267,14 @@ func (t *TeamsService) AssignProject(teamID, projectID int) (*TeamProjectAssocRe
 // RemoveProject remove a project from a team.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#remove-a-team-from-a-project
-func (t *TeamsService) RemoveProject(teamID, projectID int) (*Response, error) {
-	urlStr := t.client.requestURL("/team/%d/project/%d", teamID, projectID)
+func (t *TeamsService) RemoveProject(teamID, projectID int) (*simpleresty.Response, error) {
+	urlStr := t.client.http.RequestURL("/team/%d/project/%d", teamID, projectID)
 
 	// Set the correct authentication header
 	t.client.setAuthTokenHeader(t.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := t.client.Delete(urlStr, nil)
+	response, getErr := t.client.http.Delete(urlStr, nil, nil)
 
 	return response, getErr
 }
@@ -280,15 +282,15 @@ func (t *TeamsService) RemoveProject(teamID, projectID int) (*Response, error) {
 // HasProject checks if a project is assigned to a team.
 //
 // Rollbar API docs: https://docs.rollbar.com/reference#check-if-a-team-is-assigned-to-a-project
-func (t *TeamsService) HasProject(teamID, projectID int) (bool, *Response, error) {
+func (t *TeamsService) HasProject(teamID, projectID int) (bool, *simpleresty.Response, error) {
 	var result *TeamProjectAssocResponse
-	urlStr := t.client.requestURL("/team/%d/project/%d", teamID, projectID)
+	urlStr := t.client.http.RequestURL("/team/%d/project/%d", teamID, projectID)
 
 	// Set the correct authentication header
 	t.client.setAuthTokenHeader(t.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := t.client.Get(urlStr, &result, nil)
+	response, getErr := t.client.http.Get(urlStr, &result, nil)
 	if getErr != nil {
 		return false, response, getErr
 	}
