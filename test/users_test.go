@@ -17,11 +17,10 @@ func TestListUsers(t *testing.T) {
 		fmt.Fprintf(w, getFixture("users_list.json"))
 	})
 
-	u, _, err := client.Users.List()
-	if err != nil {
-		t.Fatal(err)
-	}
+	u, r, err := client.Users.List()
 
+	assert.Nil(t, err)
+	assert.Equal(t, "GET", r.RequestMethod)
 	assert.Equal(t, 3, len(u.Result.Users))
 	assert.Equal(t, "username1@email.com", u.Result.Users[0].GetEmail())
 	assert.Equal(t, int64(123), u.Result.Users[0].GetID())
@@ -38,18 +37,17 @@ func TestGetUsers(t *testing.T) {
 		fmt.Fprintf(w, getFixture("users_get.json"))
 	})
 
-	u, _, err := client.Users.Get(123)
-	if err != nil {
-		t.Fatal(err)
-	}
+	u, r, err := client.Users.Get(123)
 
+	assert.Nil(t, err)
+	assert.Equal(t, "GET", r.RequestMethod)
 	assert.Equal(t, "username1@email.com", u.Result.GetEmail())
 	assert.Equal(t, int64(123), u.Result.GetID())
 	assert.Equal(t, "username1", u.Result.GetUsername())
 	assert.Equal(t, 1, u.Result.GetEmailEnabled())
 }
 
-func TestListTeams(t *testing.T) {
+func TestListUserTeams(t *testing.T) {
 	teardown := setup()
 	defer teardown()
 
@@ -59,11 +57,10 @@ func TestListTeams(t *testing.T) {
 		fmt.Fprintf(w, getFixture("users_list_teams.json"))
 	})
 
-	teams, _, err := client.Users.ListTeams(123)
-	if err != nil {
-		t.Fatal(err)
-	}
+	teams, r, err := client.Users.ListTeams(123)
 
+	assert.Nil(t, err)
+	assert.Equal(t, "GET", r.RequestMethod)
 	assert.Equal(t, "Owners", teams.GetResult().Teams[0].GetName())
 	assert.Equal(t, int64(123), teams.GetResult().Teams[0].GetID())
 	assert.Equal(t, "owner", teams.GetResult().Teams[0].GetAccessLevel())
@@ -80,11 +77,10 @@ func TestListProjects(t *testing.T) {
 		fmt.Fprintf(w, getFixture("users_list_projects.json"))
 	})
 
-	p, _, err := client.Users.ListProjects(123)
-	if err != nil {
-		t.Fatal(err)
-	}
+	p, r, err := client.Users.ListProjects(123)
 
+	assert.Nil(t, err)
+	assert.Equal(t, "GET", r.RequestMethod)
 	assert.Equal(t, "project_one", p.GetResult().Projects[0].GetSlug())
 	assert.Equal(t, 1, p.GetResult().Projects[0].GetStatus())
 	assert.Equal(t, int64(991), p.GetResult().Projects[0].GetID())
