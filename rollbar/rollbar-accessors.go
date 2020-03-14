@@ -581,6 +581,41 @@ func (t *TeamResponse) GetResult() *Team {
 	return t.Result
 }
 
+// GetTeamID returns the TeamID field if it's non-nil, zero value otherwise.
+func (t *TeamUserAssoc) GetTeamID() int64 {
+	if t == nil || t.TeamID == nil {
+		return 0
+	}
+	return *t.TeamID
+}
+
+// GetUserID returns the UserID field if it's non-nil, zero value otherwise.
+func (t *TeamUserAssoc) GetUserID() int64 {
+	if t == nil || t.UserID == nil {
+		return 0
+	}
+	return *t.UserID
+}
+
+// GetErrorCount returns the ErrorCount field if it's non-nil, zero value otherwise.
+func (t *TeamUserListResponse) GetErrorCount() int {
+	if t == nil || t.ErrorCount == nil {
+		return 0
+	}
+	return *t.ErrorCount
+}
+
+// HasResult checks if TeamUserListResponse has any Result.
+func (t *TeamUserListResponse) HasResult() bool {
+	if t == nil || t.Result == nil {
+		return false
+	}
+	if len(t.Result) == 0 {
+		return false
+	}
+	return true
+}
+
 // GetEmail returns the Email field if it's non-nil, zero value otherwise.
 func (u *User) GetEmail() string {
 	if u == nil || u.Email == nil {

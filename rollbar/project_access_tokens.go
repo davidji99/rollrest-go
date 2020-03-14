@@ -8,7 +8,7 @@ import (
 // ProjectAccessTokensService handles communication with the project access token related
 // methods of the Rollbar API.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#project-access-tokens
+// Rollbar API docs: https://explorer.docs.rollbar.com/#tag/Project-Access-Tokens
 type ProjectAccessTokensService service
 
 // ProjectAccessToken represents a project access token.
@@ -55,7 +55,7 @@ type PATUpdateRequest struct {
 
 // List all of a project's access tokens.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#list-all-project-access-tokens
+// Rollbar API docs: https://explorer.docs.rollbar.com/#operation/list-all-project-access-tokens
 func (p *ProjectAccessTokensService) List(projectID int) (*ProjectAccessTokenListResponse, *simpleresty.Response, error) {
 	var result *ProjectAccessTokenListResponse
 	urlStr := p.client.http.RequestURL("/project/%d/access_tokens", projectID)
@@ -98,7 +98,7 @@ func (p *ProjectAccessTokensService) Get(projectID int, accessToken string) (*Pr
 
 // Create a project access token.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#create-a-project-access-token
+// Rollbar API docs: https://explorer.docs.rollbar.com/#operation/create-a-project-access-token
 func (p *ProjectAccessTokensService) Create(projectID int, opts *PATCreateRequest) (*ProjectAccessTokenResponse, *simpleresty.Response, error) {
 	var result *ProjectAccessTokenResponse
 	urlStr := p.client.http.RequestURL("/project/%d/access_tokens", projectID)
@@ -114,7 +114,7 @@ func (p *ProjectAccessTokensService) Create(projectID int, opts *PATCreateReques
 
 // Update a project access token.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#update-a-rate-limit
+// Rollbar API docs: https://explorer.docs.rollbar.com/#operation/update-a-rate-limit
 func (p *ProjectAccessTokensService) Update(projectID int, accessToken string,
 	opts *PATUpdateRequest) (*ProjectAccessTokenResponse, *simpleresty.Response, error) {
 	// API requires RateLimitWindowSize and RateLimitWindowCount to be both set in the request body so validate this first.

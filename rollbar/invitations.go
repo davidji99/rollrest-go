@@ -5,7 +5,7 @@ import "github.com/davidji99/simpleresty"
 // InvitationService handles communication with the invitation related
 // methods of the Rollbar API.
 //
-// Rollbar API docs: https://docs.rollbar.com/invitation
+// Rollbar API docs: N/A
 type InvitationService service
 
 // InvitationResponse represents a response after inviting an user.
@@ -33,7 +33,7 @@ type Invitation struct {
 
 // Get a invitation.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#get-invitation
+// Rollbar API docs: https://explorer.docs.rollbar.com/#operation/get-invitation
 func (i *InvitationService) Get(inviteID int) (*InvitationResponse, *simpleresty.Response, error) {
 	var result *InvitationResponse
 	urlStr := i.client.http.RequestURL("/invite/%d", inviteID)
@@ -49,7 +49,7 @@ func (i *InvitationService) Get(inviteID int) (*InvitationResponse, *simpleresty
 
 // Cancel a invitation.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#cancel-invitation
+// Rollbar API docs: https://explorer.docs.rollbar.com/#operation/cancel-invitation
 func (i *InvitationService) Cancel(inviteID int) (*simpleresty.Response, error) {
 	urlStr := i.client.http.RequestURL("/invite/%d", inviteID)
 

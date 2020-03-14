@@ -5,7 +5,7 @@ import "github.com/davidji99/simpleresty"
 // NotificationsService handles communication with the notification related
 // methods of the Rollbar API.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#notifications
+// Rollbar API docs: https://explorer.docs.rollbar.com/#tag/Notifications
 type NotificationsService service
 
 // PDIntegrationRequest represents a request to configure Rollbar with PagerDuty.
@@ -40,7 +40,7 @@ type PDRuleConfig struct {
 //
 // This function creates and modifies the PagerDuty integration. Requires a project access token.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#configuring-pagerduty-integration
+// Rollbar API docs: https://explorer.docs.rollbar.com/#operation/configuring-pagerduty-integration
 func (n *NotificationsService) ConfigurePagerDutyIntegration(opts *PDIntegrationRequest) (*simpleresty.Response, error) {
 	urlStr := n.client.http.RequestURL("/notifications/pagerduty")
 
@@ -61,7 +61,7 @@ func (n *NotificationsService) ConfigurePagerDutyIntegration(opts *PDIntegration
 // Additionally, if you construct a request body that has an empty array for filters or is missing entirely,
 // a default rule is created: 'trigger in any environment where level >= debug'.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#setup-pagerduty-notification-rules
+// Rollbar API docs: https://explorer.docs.rollbar.com/#operation/setup-pagerduty-notification-rules
 func (n *NotificationsService) ModifyPagerDutyRules(opts []*PDRuleRequest) (bool, *simpleresty.Response, error) {
 	urlStr := n.client.http.RequestURL("/notifications/pagerduty/rules")
 
@@ -88,7 +88,7 @@ func (n *NotificationsService) ModifyPagerDutyRules(opts []*PDRuleRequest) (bool
 // Requires a project access token.
 // (The API documentation is wrong regarding which documentation to use as of Feb. 10th, 2020.)
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#setup-pagerduty-notification-rules
+// Rollbar API docs: https://explorer.docs.rollbar.com/#operation/setup-pagerduty-notification-rules
 func (n *NotificationsService) DeleteAllPagerDutyRules() (bool, *simpleresty.Response, error) {
 	opts := make([]*PDRuleRequest, 0)
 	return n.ModifyPagerDutyRules(opts)

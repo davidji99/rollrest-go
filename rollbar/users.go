@@ -5,7 +5,7 @@ import "github.com/davidji99/simpleresty"
 // UsersService handles communication with the users related
 // methods of the Rollbar API.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#users
+// Rollbar API docs: https://explorer.docs.rollbar.com/#tag/Users
 type UsersService service
 
 // User represents a user in Rollbar.
@@ -65,7 +65,7 @@ type UserProject struct {
 
 // List all users.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#list-all-users
+// Rollbar API docs: https://explorer.docs.rollbar.com/#operation/list-all-users
 func (u *UsersService) List() (*UserListResponse, *simpleresty.Response, error) {
 	var result *UserListResponse
 	urlStr := u.client.http.RequestURL("/users")
@@ -84,7 +84,7 @@ func (u *UsersService) List() (*UserListResponse, *simpleresty.Response, error) 
 // Returns basic information about the user, as relevant to the account your access token is for.
 // This is the same information available on the "Members" page in the Rollbar UI.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#get-a-user
+// Rollbar API docs: https://explorer.docs.rollbar.com/#operation/get-a-user
 func (u *UsersService) Get(userID int) (*UserResponse, *simpleresty.Response, error) {
 	var result *UserResponse
 	urlStr := u.client.http.RequestURL("/user/%d", userID)
@@ -100,7 +100,7 @@ func (u *UsersService) Get(userID int) (*UserResponse, *simpleresty.Response, er
 
 // ListTeams lists all teams that a user is a member of.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#list-a-users-teams
+// Rollbar API docs: https://explorer.docs.rollbar.com/#operation/list-a-users-teams
 func (u *UsersService) ListTeams(userID int) (*UserTeamsListResponse, *simpleresty.Response, error) {
 	var result *UserTeamsListResponse
 	urlStr := u.client.http.RequestURL("/user/%d/teams", userID)
@@ -116,7 +116,7 @@ func (u *UsersService) ListTeams(userID int) (*UserTeamsListResponse, *simpleres
 
 // ListProjects lists all of a user's projects.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#list-a-users-projects
+// Rollbar API docs: https://explorer.docs.rollbar.com/#operation/list-a-users-projects
 func (u *UsersService) ListProjects(userID int) (*UserProjectsListResponse, *simpleresty.Response, error) {
 	var result *UserProjectsListResponse
 	urlStr := u.client.http.RequestURL("/user/%d/projects", userID)

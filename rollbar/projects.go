@@ -5,7 +5,7 @@ import "github.com/davidji99/simpleresty"
 // ProjectsService handles communication with the project related
 // methods of the Rollbar API.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#projects
+// Rollbar API docs: https://explorer.docs.rollbar.com/#tag/Projects
 type ProjectsService service
 
 // Project represents a rollbar project.
@@ -65,7 +65,7 @@ type ProjectRequest struct {
 // By default, the API returns all a list of deleted and active projects. If you wish to see deleted projects,
 // please use the ListAll() function.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#list-all-projects
+// Rollbar API docs: https://explorer.docs.rollbar.com/#operation/list-all-projects
 func (p *ProjectsService) List() (*ProjectListResponse, *simpleresty.Response, error) {
 	var result *ProjectListResponse
 	urlStr := p.client.http.RequestURL("/projects")
@@ -99,7 +99,7 @@ func (p *ProjectsService) List() (*ProjectListResponse, *simpleresty.Response, e
 // By default, the API returns all a list of deleted and active projects. If you wish to see only active projects,
 // please use the List() function.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#list-all-projects
+// Rollbar API docs: https://explorer.docs.rollbar.com/#operation/list-all-projects
 func (p *ProjectsService) ListAll() (*ProjectListResponse, *simpleresty.Response, error) {
 	var result *ProjectListResponse
 	urlStr := p.client.http.RequestURL("/projects")
@@ -115,7 +115,7 @@ func (p *ProjectsService) ListAll() (*ProjectListResponse, *simpleresty.Response
 
 // Get a single project.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#get-a-project
+// Rollbar API docs: https://explorer.docs.rollbar.com/#operation/get-a-project
 func (p *ProjectsService) Get(id int) (*ProjectResponse, *simpleresty.Response, error) {
 	var result *ProjectResponse
 	urlStr := p.client.http.RequestURL("/project/%d", id)
@@ -131,7 +131,7 @@ func (p *ProjectsService) Get(id int) (*ProjectResponse, *simpleresty.Response, 
 
 // Create a single project.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#create-a-project
+// Rollbar API docs: https://explorer.docs.rollbar.com/#operation/create-a-project
 func (p *ProjectsService) Create(opts *ProjectRequest) (*ProjectResponse, *simpleresty.Response, error) {
 	var result *ProjectResponse
 	urlStr := p.client.http.RequestURL("/projects")
@@ -147,7 +147,7 @@ func (p *ProjectsService) Create(opts *ProjectRequest) (*ProjectResponse, *simpl
 
 // Delete an existing project.
 //
-// Rollbar API docs: https://docs.rollbar.com/reference#delete-a-project
+// Rollbar API docs: https://explorer.docs.rollbar.com/#operation/delete-a-project
 func (p *ProjectsService) Delete(id int) (*simpleresty.Response, error) {
 	urlStr := p.client.http.RequestURL("/project/%d", id)
 
