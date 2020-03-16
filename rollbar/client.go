@@ -45,6 +45,7 @@ type Client struct {
 	projectAccessToken string
 
 	// Services used for talking to different parts of the Rollbar API.
+	Invitations         *InvitationsService
 	Notifications       *NotificationsService
 	Projects            *ProjectsService
 	ProjectAccessTokens *ProjectAccessTokensService
@@ -91,6 +92,7 @@ func New(opts ...Option) (*Client, error) {
 // injectServices adds the services to the client.
 func (c *Client) injectServices() {
 	c.common.client = c
+	c.Invitations = (*InvitationsService)(&c.common)
 	c.Notifications = (*NotificationsService)(&c.common)
 	c.Projects = (*ProjectsService)(&c.common)
 	c.ProjectAccessTokens = (*ProjectAccessTokensService)(&c.common)
