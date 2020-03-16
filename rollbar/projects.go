@@ -28,7 +28,7 @@ type ProjectResponse struct {
 // ProjectListResponse represents the response returned after getting all projects.
 type ProjectListResponse struct {
 	ErrorCount *int       `json:"err,omitempty"`
-	Results    []*Project `json:"result,omitempty"`
+	Result     []*Project `json:"result,omitempty"`
 }
 
 // ProjectSD represents a project's settings data.
@@ -80,15 +80,15 @@ func (p *ProjectsService) List() (*ProjectListResponse, *simpleresty.Response, e
 	}
 
 	// If there are any results, iterate through them and get only the active projects.
-	if len(result.Results) > 0 {
+	if len(result.Result) > 0 {
 		var activeProjects []*Project
-		for _, project := range result.Results {
+		for _, project := range result.Result {
 			if project.GetName() != "" {
 				activeProjects = append(activeProjects, project)
 			}
 		}
 
-		result.Results = activeProjects
+		result.Result = activeProjects
 	}
 
 	return result, response, nil

@@ -48,7 +48,7 @@ func TestCreateTeams(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, "POST", r.RequestMethod)
-	assert.Equal(t, "{\n  \"err\": 0,\n  \"result\": {\n    \"id\": 123,\n    \"account_id\": 999,\n    \"name\": \"Owners\",\n    \"access_level\": \"owner\"\n  }\n}", r.Body)
+	assert.Equal(t, "{\"name\":\"new_team\",\"access_level\":\"owner\"}", r.RequestBody)
 	assert.Equal(t, "Owners", team.Result.GetName())
 }
 
