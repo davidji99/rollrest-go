@@ -1,1 +1,0 @@
-package rollbar_go
