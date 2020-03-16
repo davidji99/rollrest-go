@@ -3,7 +3,7 @@ rollrest-go is a Go client library for accessing the [Rollbar REST APIs](https:/
 
 # Example
 ```go
-	client, newClientErr := rollbar.New(rollbar.AuthAAT("some_account_access_token"),
+	client, newClientErr := rollrest.New(rollbar.AuthAAT("some_account_access_token"),
 		rollbar.UserAgent("rollbar-go-custom"))
 
 	if newClientErr != nil {

@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/davidji99/rollbar-go/rollrest"
+	"github.com/davidji99/rollrest-go/rollrest"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
