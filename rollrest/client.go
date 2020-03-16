@@ -1,4 +1,4 @@
-package rollbar
+package rollrest
 
 import (
 	"fmt"

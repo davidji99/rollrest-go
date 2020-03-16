@@ -1,4 +1,4 @@
-package rollbar
+package rollrest
 
 import (
 	"github.com/davidji99/simpleresty"

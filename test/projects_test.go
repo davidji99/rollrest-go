@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/davidji99/rollbar-go/rollbar"
+	"github.com/davidji99/rollbar-go/rollrest"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
@@ -79,7 +79,7 @@ func TestCreateProject(t *testing.T) {
 		fmt.Fprintf(w, getFixture("projects_get.json"))
 	})
 
-	opts := &rollbar.ProjectRequest{Name: "my project"}
+	opts := &rollrest.ProjectRequest{Name: "my project"}
 
 	p, r, err := client.Projects.Create(opts)
 

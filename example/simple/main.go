@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/davidji99/rollbar-go/rollbar"
+	"github.com/davidji99/rollbar-go/rollrest"
 )
 
 func main() {
-	client, newClientErr := rollbar.New(rollbar.AuthAAT("some_account_access_token"),
-		rollbar.UserAgent("rollbar-go-custom"))
+	client, newClientErr := rollrest.New(rollrest.AuthAAT("some_account_access_token"),
+		rollrest.UserAgent("rollbar-go-custom"))
 
 	if newClientErr != nil {
 		fmt.Printf("Error: %v\n", newClientErr)
