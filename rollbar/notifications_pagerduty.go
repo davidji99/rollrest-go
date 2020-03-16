@@ -10,7 +10,7 @@ type NotificationsService service
 
 // PDIntegrationRequest represents a request to configure Rollbar with PagerDuty.
 type PDIntegrationRequest struct {
-	Enabled    *bool  `json:"enabled,omitempty"`
+	Enabled    bool   `json:"enabled,omitempty"`
 	ServiceKey string `json:"service_key,omitempty"`
 }
 
@@ -56,7 +56,7 @@ func (n *NotificationsService) ConfigurePagerDutyIntegration(opts *PDIntegration
 // ModifyPagerDutyRules creates & modifies PagerDuty notification rules for a project.
 //
 // Requires a project access token.
-// (The API documentation is wrong regarding which documentation to use as of Feb. 10th, 2020.)
+// (The API documentation is wrong regarding which access token to use as of Feb. 10th, 2020.)
 //
 // Additionally, if you construct a request body that has an empty array for filters or is missing entirely,
 // a default rule is created: 'trigger in any environment where level >= debug'.
@@ -69,24 +69,19 @@ func (n *NotificationsService) ModifyPagerDutyRules(opts []*PDRuleRequest) (bool
 	n.client.setAuthTokenHeader(n.client.projectAccessToken)
 
 	// Execute the request
-	isSuccessful := false
 	response, getErr := n.client.http.Put(urlStr, nil, opts)
 	if getErr != nil {
 		return false, response, getErr
 	}
 
-	if response.StatusCode == 200 {
-		isSuccessful = true
-	}
-
-	return isSuccessful, response, nil
+	return true, response, nil
 }
 
 // DeleteAllPagerDutyRules removes all rules for a project's PagerDuty notification integration.
 // This is the same ModifyPagerDutyRules but passes in an empty array as the request body for convenience.
 //
 // Requires a project access token.
-// (The API documentation is wrong regarding which documentation to use as of Feb. 10th, 2020.)
+// (The API documentation is wrong regarding which access token to use as of Feb. 10th, 2020.)
 //
 // Rollbar API docs: https://explorer.docs.rollbar.com/#operation/setup-pagerduty-notification-rules
 func (n *NotificationsService) DeleteAllPagerDutyRules() (bool, *simpleresty.Response, error) {

@@ -96,22 +96,6 @@ func (i *InvitationResponse) GetResult() *Invitation {
 	return i.Result
 }
 
-// GetRateLimitWindowCount returns the RateLimitWindowCount field if it's non-nil, zero value otherwise.
-func (p *PATCreateRequest) GetRateLimitWindowCount() int {
-	if p == nil || p.RateLimitWindowCount == nil {
-		return 0
-	}
-	return *p.RateLimitWindowCount
-}
-
-// GetRateLimitWindowSize returns the RateLimitWindowSize field if it's non-nil, zero value otherwise.
-func (p *PATCreateRequest) GetRateLimitWindowSize() int {
-	if p == nil || p.RateLimitWindowSize == nil {
-		return 0
-	}
-	return *p.RateLimitWindowSize
-}
-
 // HasScopes checks if PATCreateRequest has any Scopes.
 func (p *PATCreateRequest) HasScopes() bool {
 	if p == nil || p.Scopes == nil {
@@ -121,30 +105,6 @@ func (p *PATCreateRequest) HasScopes() bool {
 		return false
 	}
 	return true
-}
-
-// GetRateLimitWindowCount returns the RateLimitWindowCount field if it's non-nil, zero value otherwise.
-func (p *PATUpdateRequest) GetRateLimitWindowCount() int {
-	if p == nil || p.RateLimitWindowCount == nil {
-		return 0
-	}
-	return *p.RateLimitWindowCount
-}
-
-// GetRateLimitWindowSize returns the RateLimitWindowSize field if it's non-nil, zero value otherwise.
-func (p *PATUpdateRequest) GetRateLimitWindowSize() int {
-	if p == nil || p.RateLimitWindowSize == nil {
-		return 0
-	}
-	return *p.RateLimitWindowSize
-}
-
-// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
-func (p *PDIntegrationRequest) GetEnabled() bool {
-	if p == nil || p.Enabled == nil {
-		return false
-	}
-	return *p.Enabled
 }
 
 // GetConfig returns the Config field.
@@ -279,7 +239,7 @@ func (p *ProjectAccessToken) GetProjectID() int64 {
 }
 
 // GetRateLimitWindowCount returns the RateLimitWindowCount field if it's non-nil, zero value otherwise.
-func (p *ProjectAccessToken) GetRateLimitWindowCount() int64 {
+func (p *ProjectAccessToken) GetRateLimitWindowCount() int {
 	if p == nil || p.RateLimitWindowCount == nil {
 		return 0
 	}
@@ -287,7 +247,7 @@ func (p *ProjectAccessToken) GetRateLimitWindowCount() int64 {
 }
 
 // GetRateLimitWindowSize returns the RateLimitWindowSize field if it's non-nil, zero value otherwise.
-func (p *ProjectAccessToken) GetRateLimitWindowSize() int64 {
+func (p *ProjectAccessToken) GetRateLimitWindowSize() int {
 	if p == nil || p.RateLimitWindowSize == nil {
 		return 0
 	}

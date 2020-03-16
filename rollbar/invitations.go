@@ -1,12 +1,14 @@
 package rollbar
 
-import "github.com/davidji99/simpleresty"
+import (
+	"github.com/davidji99/simpleresty"
+)
 
-// InvitationService handles communication with the invitation related
+// InvitationsService handles communication with the invitation related
 // methods of the Rollbar API.
 //
 // Rollbar API docs: N/A
-type InvitationService service
+type InvitationsService service
 
 // InvitationResponse represents a response after inviting an user.
 type InvitationResponse struct {
@@ -31,10 +33,10 @@ type Invitation struct {
 	DateRedeemed *int64  `json:"date_redeemed,omitempty"`
 }
 
-// Get a invitation.
+// Get an invitation.
 //
 // Rollbar API docs: https://explorer.docs.rollbar.com/#operation/get-invitation
-func (i *InvitationService) Get(inviteID int) (*InvitationResponse, *simpleresty.Response, error) {
+func (i *InvitationsService) Get(inviteID int) (*InvitationResponse, *simpleresty.Response, error) {
 	var result *InvitationResponse
 	urlStr := i.client.http.RequestURL("/invite/%d", inviteID)
 
@@ -47,17 +49,26 @@ func (i *InvitationService) Get(inviteID int) (*InvitationResponse, *simpleresty
 	return result, response, getErr
 }
 
-// Cancel a invitation.
+// Cancel an invitation.
 //
 // Rollbar API docs: https://explorer.docs.rollbar.com/#operation/cancel-invitation
-func (i *InvitationService) Cancel(inviteID int) (*simpleresty.Response, error) {
+func (i *InvitationsService) Cancel(inviteID int) (bool, *simpleresty.Response, error) {
 	urlStr := i.client.http.RequestURL("/invite/%d", inviteID)
+
+	var result *struct {
+		Err int `json:"err,omitempty"`
+	}
 
 	// Set the correct authentication header
 	i.client.setAuthTokenHeader(i.client.accountAccessToken)
 
 	// Execute the request
-	response, getErr := i.client.http.Delete(urlStr, nil, nil)
+	response, getErr := i.client.http.Delete(urlStr, &result, nil)
 
-	return response, getErr
+	// Return false if the err count is nonzero
+	if result.Err != 0 {
+		return false, response, getErr
+	}
+
+	return true, response, getErr
 }

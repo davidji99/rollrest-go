@@ -17,8 +17,8 @@ type ProjectAccessToken struct {
 	AccessToken                 *string  `json:"access_token,omitempty"`
 	Name                        *string  `json:"name,omitempty"`
 	Status                      *string  `json:"status,omitempty"`
-	RateLimitWindowSize         *int64   `json:"rate_limit_window_size,omitempty"`
-	RateLimitWindowCount        *int64   `json:"rate_limit_window_count,omitempty"`
+	RateLimitWindowSize         *int     `json:"rate_limit_window_size,omitempty"`
+	RateLimitWindowCount        *int     `json:"rate_limit_window_count,omitempty"`
 	CurrentRateLimitWindowStart *int64   `json:"cur_rate_limit_window_start,omitempty"`
 	CurrentRateLimitWindowCount *int64   `json:"cur_rate_limit_window_count,omitempty"`
 	DataCreated                 *int64   `json:"date_created,omitempty"`
@@ -43,14 +43,16 @@ type PATCreateRequest struct {
 	Name                 string   `json:"name,omitempty"`
 	Scopes               []string `json:"scopes,omitempty"`
 	Status               string   `json:"status,omitempty"`
-	RateLimitWindowSize  *int     `json:"rate_limit_window_size,omitempty"`
-	RateLimitWindowCount *int     `json:"rate_limit_window_count,omitempty"`
+	RateLimitWindowSize  int      `json:"rate_limit_window_size,omitempty"`
+	RateLimitWindowCount int      `json:"rate_limit_window_count,omitempty"`
 }
 
 // PATUpdateRequest represents a request to update a project access token.
+//
+// Both RateLimitWindowSize and RateLimitWindowCount need to be set.
 type PATUpdateRequest struct {
-	RateLimitWindowSize  *int `json:"rate_limit_window_size,omitempty"`
-	RateLimitWindowCount *int `json:"rate_limit_window_count,omitempty"`
+	RateLimitWindowSize  int `json:"rate_limit_window_size,omitempty"`
+	RateLimitWindowCount int `json:"rate_limit_window_count,omitempty"`
 }
 
 // List all of a project's access tokens.
@@ -73,10 +75,10 @@ func (p *ProjectAccessTokensService) List(projectID int) (*ProjectAccessTokenLis
 //
 // We don't want to use the actual access token.
 //
-// Also as no endpoint officially exists, this function will first fetch all of a project's access token
+// Also since no endpoint officially exists, this method will first fetch all of a project's access token
 // and iterate through each token to find the specified one.
 func (p *ProjectAccessTokensService) Get(projectID int, accessToken string) (*ProjectAccessToken, *simpleresty.Response, error) {
-	projects, _, listErr := p.List(projectID)
+	projects, response, listErr := p.List(projectID)
 	if listErr != nil {
 		return nil, nil, listErr
 	}
@@ -90,10 +92,10 @@ func (p *ProjectAccessTokensService) Get(projectID int, accessToken string) (*Pr
 	}
 
 	if targetProject == nil {
-		return nil, nil, fmt.Errorf("not found")
+		return nil, response, fmt.Errorf("specified project access token not found")
 	}
 
-	return targetProject, nil, nil
+	return targetProject, response, nil
 }
 
 // Create a project access token.
@@ -117,12 +119,6 @@ func (p *ProjectAccessTokensService) Create(projectID int, opts *PATCreateReques
 // Rollbar API docs: https://explorer.docs.rollbar.com/#operation/update-a-rate-limit
 func (p *ProjectAccessTokensService) Update(projectID int, accessToken string,
 	opts *PATUpdateRequest) (*ProjectAccessTokenResponse, *simpleresty.Response, error) {
-	// API requires RateLimitWindowSize and RateLimitWindowCount to be both set in the request body so validate this first.
-	if opts.RateLimitWindowSize == nil || opts.RateLimitWindowCount == nil {
-		return nil, nil, fmt.Errorf("both rate_limit_window_size & rate_limit_window_count " +
-			"must be set in the request body")
-	}
-
 	var result *ProjectAccessTokenResponse
 	urlStr := p.client.http.RequestURL("/project/%d/access_token/%s", projectID, accessToken)
 
