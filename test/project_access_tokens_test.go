@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/davidji99/rollbar-go/rollbar"
+	"github.com/davidji99/rollrest-go/rollrest"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
@@ -71,7 +71,7 @@ func TestCreateProjectAccessTokens(t *testing.T) {
 		fmt.Fprintf(w, getFixture("pat_modify.json"))
 	})
 
-	opts := &rollbar.PATCreateRequest{
+	opts := &rollrest.PATCreateRequest{
 		Name:                 "new automation token",
 		Scopes:               []string{"read", "write"},
 		Status:               "enabled",
@@ -97,7 +97,7 @@ func TestUpdateProjectAccessTokens(t *testing.T) {
 		fmt.Fprintf(w, getFixture("pat_modify.json"))
 	})
 
-	opts := &rollbar.PATUpdateRequest{
+	opts := &rollrest.PATUpdateRequest{
 		RateLimitWindowSize:  60,
 		RateLimitWindowCount: 1500,
 	}

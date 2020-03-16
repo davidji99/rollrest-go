@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/davidji99/rollbar-go/rollbar"
+	"github.com/davidji99/rollrest-go/rollrest"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
@@ -18,7 +18,7 @@ func TestConfigurePagerDutyIntegration(t *testing.T) {
 		fmt.Fprintf(w, getFixture("generic_response.json"))
 	})
 
-	opts := &rollbar.PDIntegrationRequest{
+	opts := &rollrest.PDIntegrationRequest{
 		Enabled:    true,
 		ServiceKey: "6xFrzw2uSLtfKvXRdGUYU86XKgqdD9rs",
 	}
@@ -39,10 +39,10 @@ func TestModifyPagerDutyRules(t *testing.T) {
 		fmt.Fprintf(w, getFixture("generic_response.json"))
 	})
 
-	opts := []*rollbar.PDRuleRequest{
+	opts := []*rollrest.PDRuleRequest{
 		{
 			Trigger: "new_item",
-			Filters: []*rollbar.PDRuleFilter{
+			Filters: []*rollrest.PDRuleFilter{
 				{
 					Type:      "level",
 					Operation: "gte",
@@ -54,11 +54,11 @@ func TestModifyPagerDutyRules(t *testing.T) {
 					Value:     "some_title",
 				},
 			},
-			Config: &rollbar.PDRuleConfig{ServiceKey: "fFGnZhAWunwRc5EaGCHAzR727fDjRW6X"},
+			Config: &rollrest.PDRuleConfig{ServiceKey: "fFGnZhAWunwRc5EaGCHAzR727fDjRW6X"},
 		},
 		{
 			Trigger: "new_item",
-			Filters: []*rollbar.PDRuleFilter{
+			Filters: []*rollrest.PDRuleFilter{
 				{
 					Type:      "title",
 					Operation: "nwithin",

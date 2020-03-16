@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/davidji99/rollbar-go/rollbar"
+	"github.com/davidji99/rollrest-go/rollrest"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -11,7 +11,7 @@ import (
 var (
 	mux       *http.ServeMux
 	server    *httptest.Server
-	client    *rollbar.Client
+	client    *rollrest.Client
 	clientErr error
 )
 
@@ -20,8 +20,8 @@ func setup() func() {
 	server = httptest.NewServer(mux)
 
 	fmt.Println(server.URL)
-	client, clientErr = rollbar.New(rollbar.BaseURL(server.URL), rollbar.AuthAAT("account_access_token"),
-		rollbar.AuthPAT("project_access_token"))
+	client, clientErr = rollrest.New(rollrest.BaseURL(server.URL), rollrest.AuthAAT("account_access_token"),
+		rollrest.AuthPAT("project_access_token"))
 	if clientErr != nil {
 		panic(clientErr)
 	}

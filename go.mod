@@ -1,4 +1,4 @@
-module github.com/davidji99/rollbar-go
+module github.com/davidji99/rollrest-go
 
 go 1.13
 

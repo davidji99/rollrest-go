@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/davidji99/rollbar-go/rollbar"
+	"github.com/davidji99/rollrest-go/rollrest"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
@@ -39,7 +39,7 @@ func TestCreateTeams(t *testing.T) {
 		fmt.Fprintf(w, getFixture("teams_response.json"))
 	})
 
-	opts := &rollbar.TeamRequest{
+	opts := &rollrest.TeamRequest{
 		Name:        "new_team",
 		AccessLevel: "owner",
 	}
@@ -179,7 +179,7 @@ func TestInviteUserToTeam(t *testing.T) {
 		fmt.Fprintf(w, getFixture("teams_invite_user.json"))
 	})
 
-	opts := &rollbar.TeamInviteRequest{Email: "user@example-company.com"}
+	opts := &rollrest.TeamInviteRequest{Email: "user@example-company.com"}
 
 	i, r, err := client.Teams.InviteUser(123, opts)
 
