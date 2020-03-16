@@ -356,12 +356,12 @@ func (p *ProjectListResponse) GetErrorCount() int {
 	return *p.ErrorCount
 }
 
-// HasResults checks if ProjectListResponse has any Results.
-func (p *ProjectListResponse) HasResults() bool {
-	if p == nil || p.Results == nil {
+// HasResult checks if ProjectListResponse has any Result.
+func (p *ProjectListResponse) HasResult() bool {
+	if p == nil || p.Result == nil {
 		return false
 	}
-	if len(p.Results) == 0 {
+	if len(p.Result) == 0 {
 		return false
 	}
 	return true

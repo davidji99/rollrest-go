@@ -67,7 +67,7 @@ func TestListUserTeams(t *testing.T) {
 	assert.Equal(t, int64(456), teams.GetResult().Teams[0].GetAccountID())
 }
 
-func TestListProjects(t *testing.T) {
+func TestListUserProjects(t *testing.T) {
 	teardown := setup()
 	defer teardown()
 
