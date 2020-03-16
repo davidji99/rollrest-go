@@ -1,14 +1,6 @@
-// Copyright 2017 The go-github AUTHORS. All rights reserved.
-//
-// Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file (https://github.com/google/go-github/blob/master/LICENSE).
-
 // +build ignore
 
 // gen-accessors generates accessor methods for structs with pointer fields.
-//
-// It is meant to be used by the go-github authors in conjunction with the
-// go generate tool before sending a commit to GitHub.
 package main
 
 import (
@@ -323,7 +315,7 @@ func (b byName) Len() int           { return len(b) }
 func (b byName) Less(i, j int) bool { return b[i].sortVal < b[j].sortVal }
 func (b byName) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
 
-const source = `// Copyright {{.Year}} The go-github AUTHORS. All rights reserved.
+const source = `// Copyright {{.Year}}
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
