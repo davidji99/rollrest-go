@@ -3,8 +3,6 @@ github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davidji99/go-querystring v1.0.2 h1:zZUgCkhdFEsb0b1tS1zhn7FwjoRyp33J3be1av5sBi0=
 github.com/davidji99/go-querystring v1.0.2/go.mod h1:67KzURpYgsT0d/eszawoSvtpI+34vczasEK3xgrxrqA=
-github.com/davidji99/simpleresty v0.2.2 h1:5Q4ECmGmALR8s/nyT/Xh2LybpIgjPIMxCFsN6JF9iqk=
-github.com/davidji99/simpleresty v0.2.2/go.mod h1:v1honpRzBWA0G2Ivpz3ozeaB4zRiYxvu8CAAAtAlHqY=
 github.com/go-resty/resty/v2 v2.2.0 h1:vgZ1cdblp8Aw4jZj3ZsKh6yKAlMg3CHMrqFSFFd+jgY=
 github.com/go-resty/resty/v2 v2.2.0/go.mod h1:nYW/8rxqQCmI3bPz9Fsmjbr2FBjGuR2Mzt6kDh3zZ7w=
 github.com/golang/protobuf v1.2.0 h1:P3YflyNX/ehuJFLhxviNdFxQPkGK5cDcApsge1SqnvM=
