@@ -2,7 +2,7 @@
 github.com/davecgh/go-spew/spew
 # github.com/davidji99/go-querystring v1.0.2
 github.com/davidji99/go-querystring/query
-# github.com/davidji99/simpleresty v0.2.2
+# github.com/davidji99/simpleresty v0.2.3
 ## explicit
 github.com/davidji99/simpleresty
 # github.com/go-resty/resty/v2 v2.2.0
