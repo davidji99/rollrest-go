@@ -58,6 +58,12 @@ type service struct {
 	client *Client
 }
 
+// GenericResponse represents a generic response from Rollbar.
+type GenericResponse struct {
+	Err     *int    `json:"err,omitempty"`
+	Message *string `json:"message,omitempty"`
+}
+
 // New constructs a new client to interact with the API using a project and/or account access token.
 func New(opts ...Option) (*Client, error) {
 	// Construct new client.

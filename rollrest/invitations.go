@@ -53,12 +53,10 @@ func (i *InvitationsService) Get(inviteID int) (*InvitationResponse, *simplerest
 // Cancel an invitation.
 //
 // Rollbar API docs: https://explorer.docs.rollbar.com/#operation/cancel-invitation
-func (i *InvitationsService) Cancel(inviteID int) (bool, *simpleresty.Response, error) {
-	urlStr := i.client.http.RequestURL("/invite/%d", inviteID)
+func (i *InvitationsService) Cancel(inviteID int) (*GenericResponse, *simpleresty.Response, error) {
+	var result GenericResponse
 
-	var result *struct {
-		Err int `json:"err,omitempty"`
-	}
+	urlStr := i.client.http.RequestURL("/invite/%d", inviteID)
 
 	// Set the correct authentication header
 	i.client.setAuthTokenHeader(i.client.accountAccessToken)
@@ -66,10 +64,5 @@ func (i *InvitationsService) Cancel(inviteID int) (bool, *simpleresty.Response, 
 	// Execute the request
 	response, getErr := i.client.http.Delete(urlStr, &result, nil)
 
-	// Return false if the err count is nonzero
-	if result.Err != 0 {
-		return false, response, getErr
-	}
-
-	return true, response, getErr
+	return &result, response, getErr
 }
