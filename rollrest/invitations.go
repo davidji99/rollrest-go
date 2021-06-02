@@ -14,6 +14,7 @@ type InvitationsService service
 type InvitationResponse struct {
 	ErrorCount *int        `json:"err,omitempty"`
 	Result     *Invitation `json:"result,omitempty"`
+	Message    *string     `json:"message,omitempty"`
 }
 
 // InvitationListResponse represents a response of all invitations.

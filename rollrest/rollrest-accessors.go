@@ -88,6 +88,14 @@ func (i *InvitationResponse) GetErrorCount() int {
 	return *i.ErrorCount
 }
 
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (i *InvitationResponse) GetMessage() string {
+	if i == nil || i.Message == nil {
+		return ""
+	}
+	return *i.Message
+}
+
 // GetResult returns the Result field.
 func (i *InvitationResponse) GetResult() *Invitation {
 	if i == nil {
