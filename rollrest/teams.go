@@ -214,6 +214,8 @@ type TeamInviteRequest struct {
 // and sent an email notification. Otherwise, an invite email will be sent,
 // containing a signup link that will allow the recipient to join the specified team.
 //
+// You can invite the same user email address multiple times, which will invalidate the most recent pending invitation.
+//
 // Rollbar API docs: https://explorer.docs.rollbar.com/#operation/invite-an-email-address-to-a-team
 func (t *TeamsService) InviteUser(teamID int, opts *TeamInviteRequest) (*InvitationResponse, *simpleresty.Response, error) {
 	var result *InvitationResponse
