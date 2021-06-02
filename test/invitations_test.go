@@ -35,9 +35,9 @@ func TestCancelInvitation(t *testing.T) {
 		fmt.Fprintf(w, getFixture("invitations_cancel.json"))
 	})
 
-	isCancelled, r, err := client.Invitations.Cancel(123)
+	response, r, err := client.Invitations.Cancel(123)
 
 	assert.Nil(t, err)
 	assert.Equal(t, "DELETE", r.RequestMethod)
-	assert.Equal(t, true, isCancelled)
+	assert.Equal(t, 0, response.GetErr())
 }
